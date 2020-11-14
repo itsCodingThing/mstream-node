@@ -18,10 +18,12 @@
     "node": "12.18.3"
   },
   "dependencies": {
+    "@types/cors": "^2.8.8",
     "@types/express": "^4.17.9",
     "@types/mongodb": "^3.5.33",
     "@types/mongoose": "^5.10.0",
     "@types/node": "^14.14.7",
+    "cors": "^2.8.5",
     "express": "^4.16.3",
     "mongodb": "^3.6.3",
     "mongoose": "^5.10.14",
