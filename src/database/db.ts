@@ -6,25 +6,29 @@ const localDb = process.env.DB_URI;
 interface Cached {
   connection?: Connection;
   gfs?: GridFSBucket;
-  cache: boolean;
+  isCached: boolean;
 }
 
-const cachedConnection: Cached = { cache: false };
+const cachedConnection: Cached = { isCached: false };
 
 export async function connectToDb(): Promise<Cached> {
-  if (!cachedConnection.cache) {
-    const connection = await mongoose.createConnection(localDb, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useUnifiedTopology: true,
-    });
+  if (!cachedConnection.isCached) {
+    try {
+      const connection = await mongoose.createConnection(localDb, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+      });
 
-    const gfs = new mongoose.mongo.GridFSBucket(connection.db, {
-      bucketName: "songs",
-    });
+      const gfs = new mongoose.mongo.GridFSBucket(connection.db, {
+        bucketName: "songs",
+      });
 
-    return { connection, gfs, cache: true };
+      return { connection, gfs, isCached: true };
+    } catch (error) {
+      console.log(error);
+    }
   } else {
     return cachedConnection;
   }
