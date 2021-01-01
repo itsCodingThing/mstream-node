@@ -1,7 +1,8 @@
 import { GridFSBucket } from "mongodb";
 import mongoose, { Connection } from "mongoose";
 
-const localDb = process.env.DB_URI;
+// eslint-disable-next-line prettier/prettier
+const localDb = process.env.NODE_ENV === "development" ? process.env.LOCAL_DB_URI : process.env.DB_URI;
 
 interface Cached {
   connection?: Connection;
