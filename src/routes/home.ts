@@ -1,6 +1,9 @@
 import express, { Request, Response } from "express";
 import { connectToDb } from "../database/db";
 import mongoose from "mongoose";
+import { createWriteStream, readFileSync } from "fs";
+import { join } from "path";
+import { tempDir } from "../server";
 
 const router = express.Router();
 
@@ -41,7 +44,14 @@ router.get("/stream/:id", async (req: Request, res: Response) => {
     const songID = req.params.id;
     const id = mongoose.Types.ObjectId(songID);
     const downloadStream = gfs.openDownloadStream(id);
-    downloadStream.pipe(res);
+
+    const writeFile = createWriteStream(join(tempDir, `${id}.mp3`));
+
+    downloadStream.pipe(writeFile);
+
+    downloadStream.on("end", () => {
+      res.send(readFileSync(join(tempDir, `${id}.mp3`)));
+    });
 
     downloadStream.on("error", (err) => {
       res.json({ ok: false, error: err.message });
