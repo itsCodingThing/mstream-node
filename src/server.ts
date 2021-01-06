@@ -11,13 +11,13 @@ const systemTempDir = tmpdir();
 export const tempDir = mkdtempSync(join(`${systemTempDir}${sep}mstream--`));
 
 app.listen(PORT, async () => {
-  try {
-    await connectToDb();
-    console.log(
-      // eslint-disable-next-line prettier/prettier
-      `${process.env.NODE_ENV === "development" ? process.env.NODE_ENV : ""} server is running on port ${PORT}`,
-    );
-  } catch (error) {
-    console.log(error);
-  }
+    try {
+        await connectToDb();
+        console.log(
+            // eslint-disable-next-line prettier/prettier
+            `${process.env.NODE_ENV === "development" ? process.env.NODE_ENV : ""} server is running on port ${PORT}`,
+        );
+    } catch (error) {
+        console.log(error);
+    }
 });
