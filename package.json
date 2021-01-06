@@ -15,7 +15,7 @@
     "start": "npm run build && npm run node"
   },
   "engines": {
-    "node": "12.18.3"
+    "node": "14.15.4"
   },
   "dependencies": {
     "@types/cors": "^2.8.8",
