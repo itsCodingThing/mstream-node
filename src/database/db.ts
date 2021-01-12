@@ -11,7 +11,14 @@ export async function connectToDb(): Promise<GridFSBucket> {
         useUnifiedTopology: true,
     });
 
+    await mongoose.connect(localDb, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+    });
+
     return new mongoose.mongo.GridFSBucket(connection.db, {
-        bucketName: "songs",
+        bucketName: "bin",
     });
 }
