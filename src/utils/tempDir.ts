@@ -87,7 +87,7 @@ class TempDir {
         return mkdtempSync(mstreamTempDirPath);
     };
 
-    saveFileInTempDir(name: string): WriteStream {
+    saveFileInTempDirStream(name: string): WriteStream {
         const filePath = `${this.#tempDirPath}${sep}${name}`;
 
         if (this.isOverSized) {
