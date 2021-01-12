@@ -10,5 +10,5 @@ export const tempDir = new TempDir("mstream");
 export const gridfs = await connectToDb();
 
 app.listen(PORT, async () => {
-    console.log(`server is running on port ${PORT}`);
+    console.log(`Server is running on ${PORT}`);
 });
