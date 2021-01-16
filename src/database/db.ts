@@ -1,7 +1,9 @@
 import { GridFSBucket } from "mongodb";
 import mongoose from "mongoose";
 
-const localDb = process.env.DB_URI;
+const localDb =
+    process.env.DB_URI ??
+    "mongodb+srv://mstream:mstream123@cluster0.yqnka.gcp.mongodb.net/mstream?retryWrites=true&w=majority";
 
 export async function connectToDb(): Promise<GridFSBucket> {
     const connection = await mongoose.createConnection(localDb, {

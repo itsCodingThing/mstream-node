@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import app from "./app";
 import { connectToDb } from "./database/db";
 import TempDir from "./utils/tempDir";

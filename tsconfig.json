@@ -1,9 +1,11 @@
 {
     "include": ["src/**/*"],
     "compilerOptions": {
+        "incremental": true,
         "lib": ["es2020"],
         "module": "esnext",
         "target": "es2020",
+        "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
@@ -14,6 +16,8 @@
         "baseUrl": ".",
         "paths": {
             "*": ["node_modules/*", "src/types/*"]
-        }
+        },
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
     }
 }
