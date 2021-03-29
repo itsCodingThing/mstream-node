@@ -1,14 +1,15 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
+import asyncHandler from "express-async-handler";
+
 import AudioModel from "../../database/models/AudioModel";
 
 const router = Router();
 
-router.get("/", async (_req: Request, res: Response, next: NextFunction) => {
-    try {
-        const docs = await AudioModel.find().lean();
+router.get(
+    "/",
+    asyncHandler(async (_req: Request, res: Response) => {
+        const docs = await AudioModel.find().sort({ uploadAt: -1 }).lean();
         res.json({ ok: true, response: docs });
-    } catch (error) {
-        next(error);
-    }
-});
+    })
+);
 export default router;

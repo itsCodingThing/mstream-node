@@ -1,4 +1,6 @@
-import { Args, ArgsType, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { gridfs } from "../server";
+import { Arg, Args, ArgsType, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { mongoose } from "@typegoose/typegoose";
 
 import AudioModel from "../database/models/AudioModel";
 
@@ -21,7 +23,7 @@ class Audio {
 }
 
 @ArgsType()
-class AudioInput {
+class AddAudioInput {
     @Field({ description: "title of the audio file" })
     title!: string;
 
@@ -29,11 +31,23 @@ class AudioInput {
     audioBlobID!: string;
 }
 
+@ArgsType()
+class RemoveAudioInput {
+    @Field({ description: "audio id" })
+    id!: string;
+
+    @Field({ description: "audio blob id" })
+    audioBlobID!: string;
+}
+
 @Resolver(Audio)
 class AudioResolver {
     @Query(() => [Audio])
     async songsList() {
-        const list = await AudioModel.find().lean();
+        // get all the docs in descending order of date (latest --> old)
+        const list = await AudioModel.find().sort({ uploadAt: -1 }).lean();
+
+        // crateing new list wiith id property in each doc
         const newList = list.map((doc) => {
             const { _id, title, filename, audioBlobID, uploadAt } = doc;
             return {
@@ -48,11 +62,23 @@ class AudioResolver {
         return newList;
     }
 
+    @Query(() => Audio)
+    async getAudioById(@Arg("id") id: string) {
+        const audio = await AudioModel.findById(id).lean();
+
+        return {
+            id: audio?._id,
+            title: audio?.title,
+            fileanme: audio?.filename,
+            uploadAt: audio?.uploadAt,
+            audioBlobID: audio?.audioBlobID,
+        };
+    }
+
     @Mutation(() => Audio)
-    async addAudio(@Args() { title, audioBlobID }: AudioInput) {
+    async addAudio(@Args() { title, audioBlobID }: AddAudioInput) {
         const newAudio = new AudioModel({ title, audioBlobID });
         await newAudio.save();
-        console.log(newAudio.toObject());
 
         return {
             id: newAudio.id,
@@ -60,6 +86,27 @@ class AudioResolver {
             filename: newAudio.filename,
             uploadAt: newAudio.uploadAt,
             audioBlobID: newAudio.audioBlobID,
+        };
+    }
+
+    @Mutation(() => Audio)
+    async removeAudio(@Args() { id, audioBlobID }: RemoveAudioInput) {
+        // first find the related audio info in db and delete it
+        // then deleting audio blob from db
+        // if any of these promise failed or reject
+        // then complete promise will reject
+        const [removeAudio] = await Promise.all([
+            AudioModel.findByIdAndDelete(id).lean(),
+            gridfs.delete(mongoose.Types.ObjectId(audioBlobID)),
+        ]);
+
+        // Return deleted audio info
+        return {
+            id: removeAudio?._id,
+            title: removeAudio?.title,
+            fileanme: removeAudio?.filename,
+            uploadAt: removeAudio?.uploadAt,
+            audioBlobID: removeAudio?.audioBlobID,
         };
     }
 }

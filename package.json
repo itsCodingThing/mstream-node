@@ -30,6 +30,7 @@
         "class-validator": "^0.13.0",
         "cors": "^2.8.5",
         "express": "^4.16.3",
+        "express-async-handler": "^1.1.4",
         "graphql": "^15.4.0",
         "mongodb": "^3.6.3",
         "mongoose": "^5.10.14",

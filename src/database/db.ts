@@ -1,5 +1,5 @@
 import { GridFSBucket } from "mongodb";
-import mongoose from "mongoose";
+import { mongoose } from "@typegoose/typegoose";
 
 const localDb =
     process.env.DB_URI ??

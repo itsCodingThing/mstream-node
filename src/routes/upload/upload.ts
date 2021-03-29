@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
+import asyncHandler from "express-async-handler";
 
 import AudioModel from "../../database/models/AudioModel";
 import { gridfs } from "../../server";
@@ -6,8 +7,9 @@ import { promisifyPipeline } from "../../utils/util";
 
 const router = Router();
 
-router.post("/:title", async (req: Request, res: Response, next: NextFunction) => {
-    try {
+router.post(
+    "/:title",
+    asyncHandler(async (req: Request, res: Response) => {
         const name = req.params.title;
         const uploadStream = gridfs.openUploadStream(name);
 
@@ -16,13 +18,11 @@ router.post("/:title", async (req: Request, res: Response, next: NextFunction) =
         console.log("successfully uploaded to database");
 
         // Upload song info in db
-        const newAudio = new AudioModel({ title: name, audioBlobID: uploadStream.id });
+        const audio = new AudioModel({ title: name, audioBlobID: uploadStream.id });
 
-        await newAudio.save();
-        res.json({ ok: true, response: { audioBlobID: newAudio.id } });
-    } catch (error) {
-        next(error);
-    }
-});
+        await audio.save();
+        res.json({ ok: true, response: { audioBlobID: audio.id } });
+    })
+);
 
 export default router;
