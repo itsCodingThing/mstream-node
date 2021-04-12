@@ -13,7 +13,8 @@
         "watch-node": "cross-env NODE_ENV=development nodemon --experimental-specifier-resolution=node -r dotenv/config dist/server.js",
         "node": "node --experimental-specifier-resolution=node dist/server.js",
         "dev": "concurrently -i -n \"TS,NODE\" -c \"bgMagenta.bold,bgCyan.bold\" \"npm run watch-ts\" \"npm run watch-node\" ",
-        "start": "npm run build && npm run node"
+        "start": "npm run build && npm run node",
+        "start:dev": "npm run build && npm run node"
     },
     "engines": {
         "node": "14.15.4"
