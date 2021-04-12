@@ -12,4 +12,8 @@ router.get(
         res.json({ ok: true, response: docs });
     })
 );
+
+router.get("/fake", (req, res) => {
+    return res.send("Hello fake response");
+});
 export default router;
