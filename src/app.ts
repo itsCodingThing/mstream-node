@@ -23,6 +23,10 @@ app.get("/", (req, res) => {
     return res.send("Home Route");
 });
 
+app.get("/dev", (req, res) => {
+    return res.send("Home Route dev");
+});
+
 // Setting a Error hadler for whole app
 app.use(errorHandler);
 
