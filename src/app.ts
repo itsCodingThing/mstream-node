@@ -19,6 +19,10 @@ app.use(express.json());
 
 app.use("/api", morgon("dev"), router);
 
+app.get("/", (req, res) => {
+    return res.send("Home Route");
+});
+
 // Setting a Error hadler for whole app
 app.use(errorHandler);
 
