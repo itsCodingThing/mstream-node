@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "node streaming api",
     "author": "Bhanu Pratap Singh",
-    "license": "ISC",
     "main": "server.js",
     "type": "module",
     "scripts": {
