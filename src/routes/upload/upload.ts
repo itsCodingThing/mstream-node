@@ -10,15 +10,15 @@ const router = Router();
 router.post(
     "/:title",
     asyncHandler(async (req: Request, res: Response) => {
-        const name = req.params.title;
-        const uploadStream = gridfs.openUploadStream(name);
+        const { title } = req.params;
+        const uploadStream = gridfs.openUploadStream(title);
 
         // Start uploading song in the database with a name
         await promisifyPipeline(req, uploadStream);
         console.log("successfully uploaded to database");
 
         // Upload song info in db
-        const audio = new AudioModel({ title: name, audioBlobID: uploadStream.id });
+        const audio = new AudioModel({ title: title, audioBlobID: uploadStream.id });
 
         await audio.save();
         res.json({ ok: true, response: { audioBlobID: audio.id } });

@@ -14,8 +14,4 @@ router.get(
     })
 );
 
-router.get("/fake", (req, res) => {
-    return res.send("Hello fake response");
-});
-
 export default router;

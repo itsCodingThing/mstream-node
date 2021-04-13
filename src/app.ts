@@ -19,12 +19,8 @@ app.use(express.json());
 
 app.use("/api", morgon("dev"), router);
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
     return res.send(`Home Route ${process.env.NODE_ENV}`);
-});
-
-app.get("/dev", (req, res) => {
-    return res.send("Home Route dev");
 });
 
 // Setting a Error hadler for whole app
