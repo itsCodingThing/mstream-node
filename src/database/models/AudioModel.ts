@@ -11,7 +11,7 @@ class AudioSchemaClass {
     @prop({ required: true })
     audioBlobID!: string;
 
-    @prop({ default: new Date() })
+    @prop({ default: Date.now })
     uploadAt!: Date;
 }
 

@@ -8,7 +8,8 @@ const router = Router();
 router.get(
     "/",
     asyncHandler(async (_req: Request, res: Response) => {
-        const docs = await AudioModel.find().sort({ uploadAt: -1 }).lean();
+        const docs = await AudioModel.find().sort({ uploadAt: -1 }).lean().select("-__v");
+
         res.json({ ok: true, response: docs });
     })
 );
@@ -16,4 +17,5 @@ router.get(
 router.get("/fake", (req, res) => {
     return res.send("Hello fake response");
 });
+
 export default router;
